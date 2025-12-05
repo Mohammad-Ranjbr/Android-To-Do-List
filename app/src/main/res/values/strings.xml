@@ -5,4 +5,6 @@
     <string name="add_task_dialog_title">اضافه کردن تسک</string>
     <string name="task_dialog_hint">عنوان</string>
     <string name="add_task_dialog_save_button_text">ذخیره</string>
+    <string name="edit_task_dialog_title">ویرایش تسک</string>
+    <string name="edit_task_dialog_update_button_text">ویرایش</string>
 </resources>
