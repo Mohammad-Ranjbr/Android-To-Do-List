@@ -5,6 +5,8 @@ import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +16,12 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        RecyclerView recyclerView = findViewById(R.id.rv_main_tasks);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        TaskAdapter taskAdapter = new TaskAdapter();
+        recyclerView.setAdapter(taskAdapter);
+
 
         View addNewTaskButton = findViewById(R.id.fab_main_addNewTask);
         addNewTaskButton.setOnClickListener(v -> {
