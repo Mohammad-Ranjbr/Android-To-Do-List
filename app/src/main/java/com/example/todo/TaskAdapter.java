@@ -9,7 +9,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
+
+    private List<Task> tasks = new ArrayList<>();
 
     @NonNull
     @Override
@@ -20,12 +25,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-
+        holder.bindTask(tasks.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return tasks.size();
+    }
+
+    public void addTask(Task task) {
+        tasks.add(0, task);
+        notifyItemInserted(0);
+    }
+
+    public void addItems(List<Task> tasks) {
+        this.tasks.addAll(tasks);
+        notifyDataSetChanged();
     }
 
     public class TaskViewHolder extends RecyclerView.ViewHolder {

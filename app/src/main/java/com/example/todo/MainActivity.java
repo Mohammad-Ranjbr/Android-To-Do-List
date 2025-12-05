@@ -1,6 +1,7 @@
 package com.example.todo;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -8,7 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddNewTaskCallback{
+
+    private TaskAdapter taskAdapter;
+    private SQLiteHelper sqLiteHelper;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,10 +21,13 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+        this.sqLiteHelper = new SQLiteHelper(this);
+        taskAdapter = new TaskAdapter();
+
+        taskAdapter.addItems(sqLiteHelper.getTasks());
 
         RecyclerView recyclerView = findViewById(R.id.rv_main_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        TaskAdapter taskAdapter = new TaskAdapter();
         recyclerView.setAdapter(taskAdapter);
 
 
@@ -30,4 +38,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void addNewTask(Task task) {
+        long newTaskId = sqLiteHelper.addTask(task);
+        if (newTaskId != -1) {
+            taskAdapter.addTask(task);
+        } else {
+            Log.e(TAG, "addNewTask: " + "task did not inserted");
+        }
+    }
+
 }

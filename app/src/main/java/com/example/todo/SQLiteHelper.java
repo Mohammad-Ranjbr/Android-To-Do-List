@@ -18,7 +18,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "todo_application_database";
     private static final String TABLE_TASK = "tbl_tasks";
     private static final String TAG = "SQLiteHelper";
-    public SQLiteHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public SQLiteHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
 
