@@ -1,19 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:fitsSystemWindows="true"
+    android:layoutDirection="rtl"
+    android:background="@color/gray100">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@drawable/background_app_bar">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/primary_bold"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="@string/app_title"
+                android:paddingStart="16dp"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/iv_main_clearAllTasks"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:srcCompat="@drawable/ic_clear_all_white_24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingEnd="16dp"/>
+        </RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp">
+            <EditText
+                android:id="@+id/et_main_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_search_edit_text"
+                android:textSize="15sp"
+                android:hint="@string/search_hint"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="42dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:layout_gravity="center_vertical|start"
+                app:srcCompat="@drawable/ic_search_24dp"/>
+        </FrameLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_main_tasks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:clipToPadding="false"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_main_addNewTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_plus_24dp"
+        android:backgroundTint="@color/colorAccent"
+        app:tint="@color/white"
+        android:layout_gravity="start|bottom"
+        android:layout_margin="16dp"
+        app:fabSize="normal"
+        app:shapeAppearanceOverlay="@style/fab_circle"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
