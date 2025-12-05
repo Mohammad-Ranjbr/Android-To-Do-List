@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">To Do</string>
-    <string name="app_title">لیست تسک</string>
+    <string name="app_title">لیست تسک‌ها</string>
     <string name="search_hint">جستحو</string>
+    <string name="add_task_dialog_title">اضافه کردن تسک</string>
+    <string name="task_dialog_hint">عنوان</string>
+    <string name="add_task_dialog_save_button_text">ذخیره</string>
 </resources>
