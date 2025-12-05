@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete_24dp" />
+        app:srcCompat="@drawable/ic_delete_24dp"/>
 
     <ImageView
         android:id="@+id/task_item_edit_button"
@@ -39,5 +39,5 @@
         app:layout_constraintEnd_toStartOf="@+id/task_item_delete_button"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="12dp"
-        app:srcCompat="@drawable/ic_edit_24dp" />
+        app:srcCompat="@drawable/ic_edit_24dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
