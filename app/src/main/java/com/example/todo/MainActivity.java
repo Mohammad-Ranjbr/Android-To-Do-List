@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
         View addNewTaskButton = findViewById(R.id.fab_main_addNewTask);
         addNewTaskButton.setOnClickListener(v -> {
-            AddTaskDialog addTaskDialog = new AddTaskDialog();
-            addTaskDialog.show(getSupportFragmentManager(), null);
+            TaskDialog taskDialog = TaskDialog.newInstance(null);
+            taskDialog.show(getSupportFragmentManager(), null);
         });
 
         View deleteAllTasksButton = findViewById(R.id.iv_main_clearAllTasks);
@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
     @Override
     public void onEditButtonClick(Task task) {
-        EditTaskDialog editTaskDialog = EditTaskDialog.newInstance(task);
-        editTaskDialog.show(getSupportFragmentManager(), null);
+        TaskDialog taskDialog = TaskDialog.newInstance(task);
+        taskDialog.show(getSupportFragmentManager(), null);
     }
 
     @Override
