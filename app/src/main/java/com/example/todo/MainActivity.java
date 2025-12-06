@@ -30,11 +30,16 @@ public class MainActivity extends AppCompatActivity implements AddNewTaskCallbac
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(taskAdapter);
 
-
         View addNewTaskButton = findViewById(R.id.fab_main_addNewTask);
         addNewTaskButton.setOnClickListener(v -> {
             AddTaskDialog addTaskDialog = new AddTaskDialog();
             addTaskDialog.show(getSupportFragmentManager(), null);
+        });
+
+        View deleteAllTasksButton = findViewById(R.id.iv_main_clearAllTasks);
+        deleteAllTasksButton.setOnClickListener(v -> {
+            sqLiteHelper.deleteAllTasks();
+            taskAdapter.deleteAllTasks();
         });
 
     }
