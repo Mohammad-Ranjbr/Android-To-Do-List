@@ -1,5 +1,6 @@
 package com.example.todo;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,9 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private List<Task> tasks = new ArrayList<>();
-    private TaskItemEventListener taskItemEventListener;
+    private final TaskItemEventListener taskItemEventListener;
 
-    public TaskAdapter (TaskItemEventListener taskItemEventListener) {
+    public TaskAdapter(TaskItemEventListener taskItemEventListener) {
         this.taskItemEventListener = taskItemEventListener;
     }
 
@@ -43,10 +44,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         notifyItemInserted(0);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void addItems(List<Task> tasks) {
-        this.tasks.addAll(tasks);
+        this.tasks = tasks;
         notifyDataSetChanged();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
     public void deleteAllTasks() {
         this.tasks.clear();
         notifyDataSetChanged();
@@ -72,16 +76,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 
-    public void setItems(List<Task> tasks) {
-        this.tasks = tasks;
-        notifyDataSetChanged();;
-    }
-
     public class TaskViewHolder extends RecyclerView.ViewHolder {
 
         private final CheckBox checkBox;
         private final ImageView deleteTaskButton;
         private final ImageView editTaskButton;
+
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.task_item_checkBox);
@@ -90,11 +90,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
 
         public void bindTask(Task task) {
+            checkBox.setOnCheckedChangeListener(null);
             checkBox.setText(task.getTitle());
             checkBox.setChecked(task.isCompleted());
 
             deleteTaskButton.setOnClickListener(v -> taskItemEventListener.onDeleteButtonClick(task));
             editTaskButton.setOnClickListener(v -> taskItemEventListener.onEditButtonClick(task));
+
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                task.setCompleted(isChecked);
+                taskItemEventListener.onItemCheckedChange(task);
+            });
 
         }
 

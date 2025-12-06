@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    taskAdapter.setItems(sqLiteHelper.searchInTasks(s.toString()));
+                    taskAdapter.addItems(sqLiteHelper.searchInTasks(s.toString()));
                 } else {
-                    taskAdapter.setItems(sqLiteHelper.getTasks());
+                    taskAdapter.addItems(sqLiteHelper.getTasks());
                 }
             }
         });
@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
         int result = sqLiteHelper.updateTask(task);
         if (result > 0) {
             taskAdapter.updateTask(task);
+        } else {
+            Log.e(TAG, "editTask: " + "task did not updated");
         }
     }
 
@@ -102,6 +104,11 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
     public void onEditButtonClick(Task task) {
         EditTaskDialog editTaskDialog = EditTaskDialog.newInstance(task);
         editTaskDialog.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void onItemCheckedChange(Task task) {
+        sqLiteHelper.updateTask(task);
     }
 
 }
