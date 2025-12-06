@@ -7,6 +7,7 @@ public class Task implements Parcelable {
     private long id;
     private String title;
     private boolean isCompleted;
+    private String createDate;
 
     public long getId() {
         return id;
@@ -32,6 +33,14 @@ public class Task implements Parcelable {
         isCompleted = completed;
     }
 
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
     public Task() {
     }
 
@@ -45,12 +54,14 @@ public class Task implements Parcelable {
         dest.writeLong(this.id);
         dest.writeString(this.title);
         dest.writeByte(this.isCompleted ? (byte) 1 : (byte) 0);
+        dest.writeString(this.createDate);
     }
 
     protected Task(android.os.Parcel in) {
         this.id = in.readLong();
         this.title = in.readString();
         this.isCompleted = in.readByte() != 0;
+        this.createDate = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

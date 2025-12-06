@@ -26,7 +26,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL("CREATE TABLE " + TABLE_TASK + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "title TEXT, completed BOOLEAN);");
+                    "title TEXT, completed BOOLEAN, create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);");
         } catch (SQLiteException e){
             Log.e(TAG, "onCreate: " + e);
         }
@@ -60,7 +60,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor = null;
         try {
             database = getReadableDatabase();
-            cursor = database.rawQuery("SELECT * FROM " + TABLE_TASK, null);
+            cursor = database.rawQuery("SELECT * FROM " + TABLE_TASK + " ORDER BY completed ASC, create_date DESC", null);
             List<Task> tasks = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
@@ -137,7 +137,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         try {
             database = getReadableDatabase();
             // This way, SQLite itself escapes the value and SQL Injection becomes zero
-            cursor = database.rawQuery("SELECT * FROM " + TABLE_TASK + " WHERE title LIKE ?", new String[]{"%" + query + "%"});
+            cursor = database.rawQuery("SELECT * FROM " + TABLE_TASK + " WHERE title LIKE ? ORDER BY completed ASC, create_date DESC",
+                    new String[]{"%" + query + "%"});
             List<Task> tasks = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
