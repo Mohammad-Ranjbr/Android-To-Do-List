@@ -1,8 +1,11 @@
 package com.example.todo;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +43,28 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
         deleteAllTasksButton.setOnClickListener(v -> {
             sqLiteHelper.deleteAllTasks();
             taskAdapter.deleteAllTasks();
+        });
+
+        EditText searchEditText = findViewById(R.id.et_main_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    taskAdapter.setItems(sqLiteHelper.searchInTasks(s.toString()));
+                } else {
+                    taskAdapter.setItems(sqLiteHelper.getTasks());
+                }
+            }
         });
 
     }
