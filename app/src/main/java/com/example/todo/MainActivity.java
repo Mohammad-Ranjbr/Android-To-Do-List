@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
     @Override
     public void onItemCheckedChange(Task task) {
         sqLiteHelper.updateTask(task);
+        taskAdapter.addItems(sqLiteHelper.getTasks());
     }
 
     @Override
