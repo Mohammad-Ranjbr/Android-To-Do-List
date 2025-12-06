@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity implements AddNewTaskCallback, TaskItemEventListener{
+public class MainActivity extends AppCompatActivity implements TaskCallback, TaskItemEventListener {
 
     private TaskAdapter taskAdapter;
     private SQLiteHelper sqLiteHelper;
@@ -48,9 +48,18 @@ public class MainActivity extends AppCompatActivity implements AddNewTaskCallbac
     public void addNewTask(Task task) {
         long newTaskId = sqLiteHelper.addTask(task);
         if (newTaskId != -1) {
+            task.setId(newTaskId);
             taskAdapter.addTask(task);
         } else {
             Log.e(TAG, "addNewTask: " + "task did not inserted");
+        }
+    }
+
+    @Override
+    public void editTask(Task task) {
+        int result = sqLiteHelper.updateTask(task);
+        if (result > 0) {
+            taskAdapter.updateTask(task);
         }
     }
 
@@ -62,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements AddNewTaskCallbac
         } else {
             Log.e(TAG, "onDeleteButtonClick: " + "task did not inserted");
         }
+    }
+
+    @Override
+    public void onEditButtonClick(Task task) {
+        EditTaskDialog editTaskDialog = EditTaskDialog.newInstance(task);
+        editTaskDialog.show(getSupportFragmentManager(), null);
     }
 
 }

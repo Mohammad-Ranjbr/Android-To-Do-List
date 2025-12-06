@@ -16,12 +16,12 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class AddTaskDialog extends DialogFragment {
 
-    private AddNewTaskCallback callback;
+    private TaskCallback callback;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.callback = (AddNewTaskCallback) context;
+        this.callback = (TaskCallback) context;
     }
 
     @NonNull

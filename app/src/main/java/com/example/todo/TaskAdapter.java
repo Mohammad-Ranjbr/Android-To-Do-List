@@ -62,6 +62,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 
+    public void updateTask(Task task) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId() == task.getId()) {
+                tasks.set(i, task);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
     public class TaskViewHolder extends RecyclerView.ViewHolder {
 
         private final CheckBox checkBox;
@@ -78,10 +88,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             checkBox.setText(task.getTitle());
             checkBox.setChecked(task.isCompleted());
 
-            deleteTaskButton.setOnClickListener(v -> {
-                taskItemEventListener.onDeleteButtonClick(task);
+            deleteTaskButton.setOnClickListener(v -> taskItemEventListener.onDeleteButtonClick(task));
+            editTaskButton.setOnClickListener(v -> taskItemEventListener.onEditButtonClick(task));
 
-            });
         }
 
     }

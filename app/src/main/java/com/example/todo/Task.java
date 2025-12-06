@@ -1,6 +1,8 @@
 package com.example.todo;
 
-public class Task {
+import android.os.Parcelable;
+
+public class Task implements Parcelable {
 
     private long id;
     private String title;
@@ -29,5 +31,38 @@ public class Task {
     public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
+
+    public Task() {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.title);
+        dest.writeByte(this.isCompleted ? (byte) 1 : (byte) 0);
+    }
+
+    protected Task(android.os.Parcel in) {
+        this.id = in.readLong();
+        this.title = in.readString();
+        this.isCompleted = in.readByte() != 0;
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(android.os.Parcel source) {
+            return new Task(source);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 
 }
