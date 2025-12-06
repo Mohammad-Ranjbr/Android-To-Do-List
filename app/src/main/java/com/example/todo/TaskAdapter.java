@@ -15,6 +15,11 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private List<Task> tasks = new ArrayList<>();
+    private TaskItemEventListener taskItemEventListener;
+
+    public TaskAdapter (TaskItemEventListener taskItemEventListener) {
+        this.taskItemEventListener = taskItemEventListener;
+    }
 
     @NonNull
     @Override
@@ -47,6 +52,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         notifyDataSetChanged();
     }
 
+    public void deleteTask(Task task) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId() == task.getId()) {
+                this.tasks.remove(task);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+    }
+
     public class TaskViewHolder extends RecyclerView.ViewHolder {
 
         private final CheckBox checkBox;
@@ -62,6 +77,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         public void bindTask(Task task) {
             checkBox.setText(task.getTitle());
             checkBox.setChecked(task.isCompleted());
+
+            deleteTaskButton.setOnClickListener(v -> {
+                taskItemEventListener.onDeleteButtonClick(task);
+
+            });
         }
 
     }

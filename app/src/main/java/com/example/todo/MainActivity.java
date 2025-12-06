@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity implements AddNewTaskCallback{
+public class MainActivity extends AppCompatActivity implements AddNewTaskCallback, TaskItemEventListener{
 
     private TaskAdapter taskAdapter;
     private SQLiteHelper sqLiteHelper;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements AddNewTaskCallbac
         setContentView(R.layout.activity_main);
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         this.sqLiteHelper = new SQLiteHelper(this);
-        taskAdapter = new TaskAdapter();
+        taskAdapter = new TaskAdapter(this);
 
         taskAdapter.addItems(sqLiteHelper.getTasks());
 
@@ -51,6 +51,16 @@ public class MainActivity extends AppCompatActivity implements AddNewTaskCallbac
             taskAdapter.addTask(task);
         } else {
             Log.e(TAG, "addNewTask: " + "task did not inserted");
+        }
+    }
+
+    @Override
+    public void onDeleteButtonClick(Task task) {
+        int result = sqLiteHelper.deleteTask(task);
+        if(result > 0) {
+            taskAdapter.deleteTask(task);
+        } else {
+            Log.e(TAG, "onDeleteButtonClick: " + "task did not inserted");
         }
     }
 
