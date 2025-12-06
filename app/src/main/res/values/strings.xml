@@ -7,4 +7,5 @@
     <string name="add_task_dialog_save_button_text">ذخیره</string>
     <string name="edit_task_dialog_title">ویرایش تسک</string>
     <string name="edit_task_dialog_update_button_text">ویرایش</string>
+    <string name="error_empty_title">عنوان نباید خالی باشد</string>
 </resources>

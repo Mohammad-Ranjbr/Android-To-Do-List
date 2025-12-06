@@ -45,7 +45,7 @@ public class AddTaskDialog extends DialogFragment {
                 callback.addNewTask(task);
                 dismiss();
             } else {
-                addNewTaskTextInputLayout.setError("عنوان نباید خالی باشد");
+                addNewTaskTextInputLayout.setError(getString(R.string.error_empty_title));
             }
         });
 
