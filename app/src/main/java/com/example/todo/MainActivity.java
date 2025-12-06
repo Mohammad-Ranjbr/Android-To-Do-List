@@ -19,7 +19,7 @@ import com.airbnb.lottie.LottieAnimationView;
 public class MainActivity extends AppCompatActivity implements TaskCallback, TaskItemEventListener {
 
     private TaskAdapter taskAdapter;
-    private SQLiteHelper sqLiteHelper;
+    private TaskDao taskDao;
     private LinearLayout emptyStateContainer;
     private TextView emptyResultTextView;
     private boolean isSearching = false;
@@ -32,13 +32,13 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
-        this.sqLiteHelper = new SQLiteHelper(this);
+        this.taskDao = AppDatabase.getAppDatabase(this).getTaskDao(); //This is the actual version of the TaskDao class (created by Room)
         this.taskAdapter = new TaskAdapter(this);
         this.emptyStateContainer = findViewById(R.id.empty_state_container);
         this.emptyResultTextView = findViewById(R.id.tv_empty_message);
         this.lottieAnimationView = findViewById(R.id.lottie_main);
 
-        taskAdapter.addItems(sqLiteHelper.getTasks());
+        taskAdapter.addItems(taskDao.getAll());
 
         RecyclerView recyclerView = findViewById(R.id.rv_main_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
         View deleteAllTasksButton = findViewById(R.id.iv_main_clearAllTasks);
         deleteAllTasksButton.setOnClickListener(v -> {
-            sqLiteHelper.deleteAllTasks();
+            taskDao.deleteAll();
             taskAdapter.deleteAllTasks();
         });
 
@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 isSearching = s.length() > 0;
                 if (isSearching) {
-                    taskAdapter.addItems(sqLiteHelper.searchInTasks(s.toString()));
+                    taskAdapter.addItems(taskDao.search(s.toString()));
                 } else {
-                    taskAdapter.addItems(sqLiteHelper.getTasks());
+                    taskAdapter.addItems(taskDao.getAll());
                 }
             }
         });
@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
     @Override
     public void addNewTask(Task task) {
-        long newTaskId = sqLiteHelper.addTask(task);
+        task.setCreateDate(String.valueOf(System.currentTimeMillis()));
+        long newTaskId = taskDao.add(task);
         if (newTaskId != -1) {
             task.setId(newTaskId);
             taskAdapter.addTask(task);
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
     @Override
     public void editTask(Task task) {
-        int result = sqLiteHelper.updateTask(task);
+        int result = taskDao.update(task);
         if (result > 0) {
             taskAdapter.updateTask(task);
         } else {
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
     @Override
     public void onDeleteButtonClick(Task task) {
-        int result = sqLiteHelper.deleteTask(task);
+        int result = taskDao.delete(task);
         if(result > 0) {
             taskAdapter.deleteTask(task);
         } else {
@@ -120,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
     @Override
     public void onItemCheckedChange(Task task) {
-        sqLiteHelper.updateTask(task);
-        taskAdapter.addItems(sqLiteHelper.getTasks());
+        taskDao.update(task);
+        taskAdapter.addItems(taskDao.getAll());
     }
 
     @Override

@@ -2,10 +2,17 @@ package com.example.todo;
 
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "tbl_tasks")
 public class Task implements Parcelable {
 
+    @PrimaryKey(autoGenerate = true)
     private long id;
     private String title;
+    @ColumnInfo(name = "completed")
     private boolean isCompleted;
     private String createDate;
 
