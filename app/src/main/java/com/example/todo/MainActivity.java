@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,9 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
     private TaskAdapter taskAdapter;
     private SQLiteHelper sqLiteHelper;
     private LinearLayout emptyStateContainer;
+    private TextView emptyResultTextView;
+    private boolean isSearching = false;
+    private LottieAnimationView lottieAnimationView;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
         this.sqLiteHelper = new SQLiteHelper(this);
         this.taskAdapter = new TaskAdapter(this);
         this.emptyStateContainer = findViewById(R.id.empty_state_container);
+        this.emptyResultTextView = findViewById(R.id.tv_empty_message);
+        this.lottieAnimationView = findViewById(R.id.lottie_main);
 
         taskAdapter.addItems(sqLiteHelper.getTasks());
 
@@ -64,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
+                isSearching = s.length() > 0;
+                if (isSearching) {
                     taskAdapter.addItems(sqLiteHelper.searchInTasks(s.toString()));
                 } else {
                     taskAdapter.addItems(sqLiteHelper.getTasks());
@@ -120,6 +127,13 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
     public void onItemCountChanged(int size) {
         if(size == 0) {
             emptyStateContainer.setVisibility(View.VISIBLE);
+            if (isSearching) {
+                emptyResultTextView.setText(getString(R.string.empty_search_message));
+                lottieAnimationView.setAnimation(R.raw.non_data_found);
+            } else {
+                emptyResultTextView.setText(getString(R.string.empty_tasks_message));
+                lottieAnimationView.setAnimation(R.raw.no_history);
+            }
         } else {
             emptyStateContainer.setVisibility(View.GONE);
         }

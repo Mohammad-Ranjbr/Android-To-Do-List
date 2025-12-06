@@ -48,7 +48,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @SuppressLint("NotifyDataSetChanged")
     public void addItems(List<Task> tasks) {
-        this.tasks = tasks;
+        this.tasks.clear();
+        this.tasks.addAll(tasks);
         notifyDataSetChanged();
         taskItemEventListener.onItemCountChanged(tasks.size());
     }
