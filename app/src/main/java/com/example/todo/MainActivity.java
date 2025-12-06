@@ -6,16 +6,20 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 public class MainActivity extends AppCompatActivity implements TaskCallback, TaskItemEventListener {
 
     private TaskAdapter taskAdapter;
     private SQLiteHelper sqLiteHelper;
+    private LinearLayout emptyStateContainer;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -25,7 +29,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
         setContentView(R.layout.activity_main);
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         this.sqLiteHelper = new SQLiteHelper(this);
-        taskAdapter = new TaskAdapter(this);
+        this.taskAdapter = new TaskAdapter(this);
+        this.emptyStateContainer = findViewById(R.id.empty_state_container);
 
         taskAdapter.addItems(sqLiteHelper.getTasks());
 
@@ -109,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
     @Override
     public void onItemCheckedChange(Task task) {
         sqLiteHelper.updateTask(task);
+    }
+
+    @Override
+    public void onItemCountChanged(int size) {
+        if(size == 0) {
+            emptyStateContainer.setVisibility(View.VISIBLE);
+        } else {
+            emptyStateContainer.setVisibility(View.GONE);
+        }
     }
 
 }

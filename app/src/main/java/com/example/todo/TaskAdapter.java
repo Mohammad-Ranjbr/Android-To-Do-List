@@ -43,18 +43,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void addTask(Task task) {
         tasks.add(0, task);
         notifyItemInserted(0);
+        taskItemEventListener.onItemCountChanged(tasks.size());
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void addItems(List<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();
+        taskItemEventListener.onItemCountChanged(tasks.size());
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void deleteAllTasks() {
         this.tasks.clear();
         notifyDataSetChanged();
+        taskItemEventListener.onItemCountChanged(tasks.size());
     }
 
     public void deleteTask(Task task) {
@@ -65,6 +68,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 break;
             }
         }
+        taskItemEventListener.onItemCountChanged(getItemCount());
     }
 
     public void updateTask(Task task) {
