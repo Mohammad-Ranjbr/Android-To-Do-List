@@ -1,6 +1,7 @@
 package com.example.todo;
 
 import android.annotation.SuppressLint;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,6 +94,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             checkBox.setOnCheckedChangeListener(null);
             checkBox.setText(task.getTitle());
             checkBox.setChecked(task.isCompleted());
+            updateStrikeThrough(checkBox, task.isCompleted());
 
             deleteTaskButton.setOnClickListener(v -> taskItemEventListener.onDeleteButtonClick(task));
             editTaskButton.setOnClickListener(v -> taskItemEventListener.onEditButtonClick(task));
@@ -100,8 +102,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 task.setCompleted(isChecked);
                 taskItemEventListener.onItemCheckedChange(task);
+                updateStrikeThrough(checkBox, isChecked);
             });
 
+        }
+
+        private void updateStrikeThrough(CheckBox checkBox, boolean isCompleted) {
+            if (isCompleted) {
+                checkBox.setPaintFlags(checkBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                checkBox.setPaintFlags(checkBox.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            }
         }
 
     }
