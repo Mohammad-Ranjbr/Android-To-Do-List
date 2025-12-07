@@ -10,4 +10,8 @@
     <string name="error_empty_title">عنوان نباید خالی باشد</string>
     <string name="empty_tasks_message">هنوز کاری ثبت نکردی!</string>
     <string name="empty_search_message">نتیجه‌ای پیدا نشد!</string>
+    <string name="confirm_dialog_delete_button_text">حذف</string>
+    <string name="confirm_dialog_cancel_button_text">لغو</string>
+    <string name="delete_item_message">آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید؟</string>
+    <string name="delete_all_message">آیا مطمئن هستید که می‌خواهید همه آیتم‌ها را حذف کنید؟</string>
 </resources>
