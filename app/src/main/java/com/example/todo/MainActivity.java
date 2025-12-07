@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
     private TextView emptyResultTextView;
     private boolean isSearching = false;
     private LottieAnimationView lottieAnimationView;
+    private RecyclerView recyclerView;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
         taskAdapter.addItems(taskDao.getAll());
 
-        RecyclerView recyclerView = findViewById(R.id.rv_main_tasks);
+        recyclerView = findViewById(R.id.rv_main_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(taskAdapter);
 
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
         if (newTaskId != -1) {
             task.setId(newTaskId);
             taskAdapter.addTask(task);
+            recyclerView.scrollToPosition(0);
         } else {
             Log.e(TAG, "addNewTask: " + "task did not inserted");
         }
