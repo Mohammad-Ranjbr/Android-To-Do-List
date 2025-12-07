@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
         View deleteAllTasksButton = findViewById(R.id.iv_main_clearAllTasks);
         deleteAllTasksButton.setOnClickListener(v -> {
-            taskDao.deleteAll();
-            taskAdapter.deleteAllTasks();
+            ConfirmDialog confirmDialog = ConfirmDialog.newInstance(null);
+            confirmDialog.show(getSupportFragmentManager(), null);
         });
 
         EditText searchEditText = findViewById(R.id.et_main_search);
@@ -107,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
     public void onDeleteButtonClick(Task task) {
         ConfirmDialog confirmDialog = ConfirmDialog.newInstance(task);
         confirmDialog.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void onConfirmDeleteAll() {
+        taskDao.deleteAll();
+        taskAdapter.deleteAllTasks();
     }
 
     @Override

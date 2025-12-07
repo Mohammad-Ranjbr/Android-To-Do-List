@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.google.android.material.button.MaterialButton;
 public class ConfirmDialog extends DialogFragment {
 
     private Task task;
+    private boolean isDeleteAll;
     private ConfirmCallback callback;
 
     @Override
@@ -23,6 +25,7 @@ public class ConfirmDialog extends DialogFragment {
         super.onAttach(context);
         this.callback = (ConfirmCallback) context;
         this.task = getArguments().getParcelable(TaskDialog.TASK_DIALOG_KEY);
+        this.isDeleteAll = (task == null);
     }
 
     @NonNull
@@ -34,14 +37,25 @@ public class ConfirmDialog extends DialogFragment {
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        TextView confirmDialogTextView = view.findViewById(R.id.tv_confirm_dialog_message);
         MaterialButton confirmDialogButton = view.findViewById(R.id.btn_confirm_confirmDialog);
         MaterialButton cancelDialogButton = view.findViewById(R.id.btn_cancel_confirmDialog);
 
-        confirmDialogButton.setOnClickListener(v -> {
-            callback.onConfirmDelete(task);
-            dismiss();
-        });
-        cancelDialogButton.setOnClickListener(v -> dismiss());
+        if (!isDeleteAll) {
+            confirmDialogTextView.setText(getString(R.string.delete_item_message));
+            confirmDialogButton.setOnClickListener(v -> {
+                callback.onConfirmDelete(task);
+                dismiss();
+            });
+            cancelDialogButton.setOnClickListener(v -> dismiss());
+        } else {
+            confirmDialogTextView.setText(getString(R.string.delete_all_message));
+            confirmDialogButton.setOnClickListener(v -> {
+                callback.onConfirmDeleteAll();
+                dismiss();
+            });
+            cancelDialogButton.setOnClickListener(v -> dismiss());
+        }
 
         return dialog;
     }
