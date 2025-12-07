@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-public class MainActivity extends AppCompatActivity implements TaskCallback, TaskItemEventListener {
+public class MainActivity extends AppCompatActivity implements TaskCallback, TaskItemEventListener, ConfirmCallback {
 
     private TaskAdapter taskAdapter;
     private TaskDao taskDao;
@@ -105,6 +105,12 @@ public class MainActivity extends AppCompatActivity implements TaskCallback, Tas
 
     @Override
     public void onDeleteButtonClick(Task task) {
+        ConfirmDialog confirmDialog = ConfirmDialog.newInstance(task);
+        confirmDialog.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void onConfirmDelete(Task task) {
         int result = taskDao.delete(task);
         if(result > 0) {
             taskAdapter.deleteTask(task);
